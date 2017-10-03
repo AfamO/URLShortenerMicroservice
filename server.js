@@ -1,5 +1,28 @@
 // server.js
 // where your node app starts
+var mongodb = require('mongodb');
+
+//We need to work with "MongoClient" interface in order to connect to a mongodb server.
+var MongoClient = mongodb.MongoClient;
+
+// Connection URL. This is where your mongodb server is running.
+//mongodb://<dbuser>:<dbpassword>@ds057934.mlab.com:57934/fccmdb
+//(Focus on This Variable)
+var url = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';     
+//(Focus on This Variable)
+// Use connect method to connect to the Server
+  MongoClient.connect(url, function (err, db) {
+  if (err) {
+    console.log('Unable to connect to the mongoDB server. Error:', err);
+  } else {
+    console.log('Connection established to my', url);
+
+    // do some work here with the database.
+
+    //Close connection
+    db.close();
+  }
+});
 
 // init project
 var express = require('express');
