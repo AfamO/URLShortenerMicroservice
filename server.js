@@ -42,6 +42,8 @@ app.get("/", function (request, response) {
 
 app.get("/new/*", function (request, response) {
   response.send(request.url);
+  var myUrl=request.url.replace("/new/","");
+  response.send(myUrl);
 });
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
