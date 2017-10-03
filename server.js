@@ -1,5 +1,6 @@
 // server.js
 // where your node app starts
+var url=require('url');
 var mongodb = require('mongodb');
 
 //We need to work with "MongoClient" interface in order to connect to a mongodb server.
@@ -8,14 +9,14 @@ var MongoClient = mongodb.MongoClient;
 // Connection URL. This is where your mongodb server is running.
 //mongodb://<dbuser>:<dbpassword>@ds057934.mlab.com:57934/fccmdb
 //(Focus on This Variable)
-var url = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';     
+var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';     
 //(Focus on This Variable)
 // Use connect method to connect to the Server 
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(dbUrl, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
-    console.log('Connection established to my', url);
+    console.log('Connection established to my', dbUrl);
 
     // do some work here with the database.
 
@@ -41,7 +42,8 @@ app.get("/", function (request, response) {
 });
 
 app.get("/new/*", function (request, response) {
-  response.send(request.url);
+  var parsedUrl=url.parse(request.url, true);
+  response.send(JSON.stringify(parsedUrl));
   var myUrl=request.url.replace("/new/","");
   response.send(myUrl);
 });
