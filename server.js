@@ -40,8 +40,8 @@ app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/new", function (request, response) {
-  response.send(request.query);
+app.get("/new/*", function (request, response) {
+  response.send(request.url);
 });
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
