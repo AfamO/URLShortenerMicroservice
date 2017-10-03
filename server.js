@@ -10,7 +10,7 @@ var MongoClient = mongodb.MongoClient;
 //(Focus on This Variable)
 var url = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';     
 //(Focus on This Variable)
-// Use connect method to connect to the Server
+// Use connect method to connect to the Server 
   MongoClient.connect(url, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
@@ -33,14 +33,15 @@ var app = express();
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
-
+//https://little-url.herokuapp.com/new/https://www.google.com
+//{ "original_url":"http://foo.com:80", "short_url":"https://little-url.herokuapp.com/8170" }
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/dreams", function (request, response) {
-  response.send(dreams);
+app.get("/new", function (request, response) {
+  response.send(request.query);
 });
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
