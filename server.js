@@ -2,6 +2,11 @@
 // where your node app starts
 var url=require('url');
 var mongodb = require('mongodb');
+function urlInfo(originalUrl,shortUrl,counter){
+  this.original_url=originalUrl;
+  this.short_url=shortUrl;
+  this.port=counter;
+}
 function connectToAndInsertIntoMongoDB(){
     //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
@@ -17,6 +22,18 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     console.log('Unable to connect to the mongoDB server. Error:', err);
   } else {
     console.log('Connection established to my', dbUrl);
+    var collection=db.collection('url-shortener');
+    if(collection!=null){
+      var counter="00001";
+      counter=+counter;
+      var doc= urlInfo("http://www.afamo/","http://www.afamo/"+counter,counter);
+      collection.insert(doc,function(err,data){
+        if err 
+      });
+    }
+    else{
+      
+    }
 
     // do some work here with the database.
 
@@ -39,11 +56,7 @@ app.use(express.static('public'));
 //https://little-url.herokuapp.com/new/https://www.google.com
 //{ "original_url":"http://foo.com:80", "short_url":"https://little-url.herokuapp.com/8170" }
 // http://expressjs.com/en/starter/basic-routing.html
-function urlInfo(originalUrl,shortUrl,counter){
-  this.original_url=originalUrl;
-  this.short_url=shortUrl;
-  this.port=counter;
-}
+
 app.get("/*", function (request, response) {
   response.send("Thank you!");
   //response.sendFile(__dirname + '/views/index.html');
