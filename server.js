@@ -2,15 +2,17 @@
 // where your node app starts
 var url=require('url');
 var mongodb = require('mongodb');
-function urlInfo(originalUrl,shortUrl,counter){
+function urlInfo(counter,originalUrl,shortUrl){
+  this._id=counter;
   this.original_url=originalUrl;
   this.short_url=shortUrl;
-  this.port=counter;
+  
 }
 function connectToAndInsertIntoMongoDB(url){
     //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
-
+var counter="00001";
+var doc= urlInfo(counter,"http://www.afamo/","http://www.afamo/"+counter);
 // Connection URL. This is where your mongodb server is running.
 //mongodb://<dbuser>:<dbpassword>@ds057934.mlab.com:57934/fccmdb
 //(Focus on This Variable)
@@ -24,9 +26,9 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     console.log('Connection established to my', dbUrl);
     var collection=db.collection('url-shortener');
     if(collection!=null){
-      var counter="00001";
+      
       counter=+counter;
-      var doc= urlInfo("http://www.afamo/","http://www.afamo/"+counter,counter);
+      
       collection.insert(doc,function(err,data){
         if (err) throw err;
         console.log(JSON.stringify(doc))
@@ -34,7 +36,7 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
       });
     }
     else{
-      
+        console.log('Could not find collection url-shortener');
     }
 
     // do some work here with the database.
