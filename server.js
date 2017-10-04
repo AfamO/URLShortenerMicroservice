@@ -7,7 +7,7 @@ function urlInfo(originalUrl,shortUrl,counter){
   this.short_url=shortUrl;
   this.port=counter;
 }
-function connectToAndInsertIntoMongoDB(){
+function connectToAndInsertIntoMongoDB(url){
     //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
 
@@ -28,7 +28,9 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
       counter=+counter;
       var doc= urlInfo("http://www.afamo/","http://www.afamo/"+counter,counter);
       collection.insert(doc,function(err,data){
-        if err 
+        if (err) throw err;
+        console.log(JSON.stringify(doc))
+        db.close()
       });
     }
     else{
@@ -57,14 +59,15 @@ app.use(express.static('public'));
 //{ "original_url":"http://foo.com:80", "short_url":"https://little-url.herokuapp.com/8170" }
 // http://expressjs.com/en/starter/basic-routing.html
 
-app.get("/*", function (request, response) {
+app.get("/[0-9]", function (request, response) {
   response.send("Thank you!");
   //response.sendFile(__dirname + '/views/index.html');
 });
 app.get("/new/*", function (request, response) {
   var parsedUrl=url.parse(request.url, true);
-  response.send(JSON.stringify(parsedUrl));
+  //response.send(JSON.stringify(parsedUrl));
   var originUrl=request.url.replace("/new/","");
+  connectToAndInsertIntoMongoDB(originUrl);
   response.send(originUrl);
 });
 
