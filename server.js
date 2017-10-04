@@ -38,7 +38,8 @@ app.use(express.static('public'));
 //{ "original_url":"http://foo.com:80", "short_url":"https://little-url.herokuapp.com/8170" }
 // http://expressjs.com/en/starter/basic-routing.html
 
-app.get("/", function (request, response) {
+app.get("/*", function (request, response) {
+  response.send("Thank you!");
   //response.sendFile(__dirname + '/views/index.html');
 });
 app.get("/new/*", function (request, response) {
