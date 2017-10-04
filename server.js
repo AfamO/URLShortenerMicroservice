@@ -11,14 +11,16 @@ function urlInfo(counter,originalUrl,shortUrl){
 function connectToAndInsertIntoMongoDB(url){
     //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
-var counter="00001";
-var doc= urlInfo(counter,"http://www.afamo/","http://www.afamo/"+counter);
+var counter="00004";
+var doc= new urlInfo(counter,"https://rich-alto.glitch.me/","https://rich-alto.glitch.me/"+counter);
 //doc={"original_url":"https://www.google.com","short_url":"https://little-url.herokuapp.com/5414"};
-doc={
+/**
+  doc={
   counter:counter,
   original_url:url,
-  
+  short_url:"https://rich-alto.glitch.me/"+counter
 };
+**/
 // Connection URL. This is where your mongodb server is running.
 //mongodb://<dbuser>:<dbpassword>@ds057934.mlab.com:57934/fccmdb
 //(Focus on This Variable)
@@ -37,8 +39,10 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
       
       collection.insert(doc,function(err,data){
         if (err) throw err;
+        doc._id=null;
         console.log(JSON.stringify(doc))
         db.close()
+        return doc;
       });
     }
     else{
@@ -76,7 +80,7 @@ app.get("/new/*", function (request, response) {
   //response.send(JSON.stringify(parsedUrl));
   var originUrl=request.url.replace("/new/","");
   connectToAndInsertIntoMongoDB(originUrl);
-  response.send(originUrl);
+  response.send(jsonOut);
 });
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
