@@ -13,6 +13,7 @@ function connectToAndInsertIntoMongoDB(url){
 var MongoClient = mongodb.MongoClient;
 var counter="00001";
 var doc= urlInfo(counter,"http://www.afamo/","http://www.afamo/"+counter);
+doc={"original_url":"https://www.google.com","short_url":"https://little-url.herokuapp.com/5414"};
 // Connection URL. This is where your mongodb server is running.
 //mongodb://<dbuser>:<dbpassword>@ds057934.mlab.com:57934/fccmdb
 //(Focus on This Variable)
