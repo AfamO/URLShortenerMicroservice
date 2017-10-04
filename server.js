@@ -2,6 +2,7 @@
 // where your node app starts
 var url=require('url');
 var mongodb = require('mongodb');
+var jsonOut={};
 function urlInfo(counter,originalUrl,shortUrl){
   this._id=counter;
   this.original_url=originalUrl;
@@ -34,12 +35,10 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     console.log('Connection established to my', dbUrl);
     var collection=db.collection('url-shortener');
     if(collection!=null){
-      
       counter=+counter;
-      
       collection.insert(doc,function(err,data){
         if (err) throw err;
-        doc._id=null;
+        jsonOut=doc;
         console.log(JSON.stringify(doc))
         db.close()
         return doc;
