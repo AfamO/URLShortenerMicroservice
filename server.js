@@ -2,8 +2,8 @@
 // where your node app starts
 var url=require('url');
 var mongodb = require('mongodb');
-
-//We need to work with "MongoClient" interface in order to connect to a mongodb server.
+function connectToAndInsertIntoMongoDB(){
+    //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
 
 // Connection URL. This is where your mongodb server is running.
@@ -23,7 +23,9 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     //Close connection
     db.close();
   }
-});
+});  
+}
+
 
 // init project
 var express = require('express');
@@ -49,8 +51,8 @@ app.get("/*", function (request, response) {
 app.get("/new/*", function (request, response) {
   var parsedUrl=url.parse(request.url, true);
   response.send(JSON.stringify(parsedUrl));
-  var myUrl=request.url.replace("/new/","");
-  response.send(myUrl);
+  var originUrl=request.url.replace("/new/","");
+  response.send(originUrl);
 });
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
