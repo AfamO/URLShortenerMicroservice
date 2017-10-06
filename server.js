@@ -66,17 +66,20 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
         if (err) throw err;
         console.log(data);
         //Is the original url already existing in db?
-        if(data.original_url==originalUrl)
+        if(data!=null)
           {
-            console.log(originalUrl +" already exists in DB.");
-            db.close();
-            response.send(data);
+             if(data.original_url==originalUrl)
+            {
+                console.log(originalUrl +" already exists in DB.");
+                db.close();
+                response.send(data);
+            }
           }
         else
           {
              console.log(originalUrl +" doesn't exists in DB. Thus adding it....");
-             counter=shuffle(numbers);//generate unique random number
-             counter=counter.replace(",","");
+             counter=String(shuffle(numbers));//generate unique random number
+             counter=counter.replaceAll(/,/gi,"");
              console.log("The unique generated random number is::"+counter);
              counter=+counter// converts to numbers
              var doc= new urlInfo(counter,originalUrl,"https://rich-alto.glitch.me/"+counter);
