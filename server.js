@@ -65,7 +65,7 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
       collection.findOne(query,function(err,data){
         if (err) throw err;
         console.log(data);
-        //Is the original url already existing in db?
+        //Is the original url already existing in DB?
         if(data!=null)
           {
              if(data.original_url==originalUrl)
@@ -76,19 +76,23 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
             }
           }
         else
-          {
+          {  
+             db.close();
              console.log(originalUrl +" doesn't exists in DB. Thus adding it....");
              counter=String(shuffle(numbers));//generate unique random number
-             counter=counter.replaceAll(/,/gi,"");
+             counter=counter.replace(/,/gi,"");
              console.log("The unique generated random number is::"+counter);
              counter=+counter// converts to numbers
              var doc= new urlInfo(counter,originalUrl,"https://rich-alto.glitch.me/"+counter);
+             MongoClient.connect(dbUrl, function (err, db) {
+             collection=db.collection('url-shortener');
              collection.insert(doc,function(err,data){
              if (err) throw err;
              jsonOut=doc;
              console.log(JSON.stringify(doc))
              db.close()
              response.send(jsonOut);
+          });//Close Inner Db conection
       });
           }
         
@@ -104,9 +108,9 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     //Close connection
     db.close();
   }
-});
+});//Close outer DB connection
 
-});
+});//Close http get method
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
 app.post("/dreams", function (request, response) {
