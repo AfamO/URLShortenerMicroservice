@@ -30,7 +30,8 @@ var app = express();
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
-
+var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb'; 
+var MongoClient = mongodb.MongoClient;
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 //https://little-url.herokuapp.com/new/https://www.google.com
@@ -55,9 +56,9 @@ app.get("/[0-9]*", function (request, response) {
         //Is the original url already existing in DB?
         if(data!=null)
           {
-             if(data.original_url==originalUrl)
+             if(data._id==counter)
             {
-                console.log(originalUrl +" already exists in DB.");
+                console.log(counter +" port was found in DB.");
                 db.close();
                 response.send(data);
             }
@@ -85,12 +86,12 @@ app.get("/new/*", function (request, response) {
   var parsedUrl=url.parse(request.url, true);
   //response.send(JSON.stringify(parsedUrl));
   var originalUrl=request.url.replace("/new/","");
-  var MongoClient = mongodb.MongoClient;
+
   var counter="";
 
 
 //(Focus on This Variable)
-var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';     
+    
 //(Focus on This Variable)
 // Use connect method to connect to the Server 
   MongoClient.connect(dbUrl, function (err, db) {
