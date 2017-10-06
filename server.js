@@ -42,7 +42,7 @@ app.get("/new/*", function (request, response) {
   var originalUrl=request.url.replace("/new/","");
   var MongoClient = mongodb.MongoClient;
 var counter="";
-var doc= new urlInfo(counter,originalUrl,"https://rich-alto.glitch.me/"+counter);
+
 
 //(Focus on This Variable)
 var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';     
@@ -55,27 +55,30 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     console.log('Connection established to my', dbUrl);
     var collection=db.collection('url-shortener');
     if(collection!=null){
-      var query={'original_url':originalUrl};
+      var query={original_url:originalUrl};
       counter=+counter;
       collection.find(query,function(err,data){
         if (err) throw err;
-        console.log(JSON.stringify(data));
+        console.log(data);
         //Is the original url already existing in db?
         if(data.original_url==originalUrl)
           {
+            console.log(originalUrl +" already exists in DB.");
             db.close();
             response.send(jsonOut);
           }
         else
           {
+             console.log(originalUrl +" doesn't exists in DB. Thus adding it....");
              counter=data.counter;
              counter=+counter// converts to numbers
+             var doc= new urlInfo(counter,originalUrl,"https://rich-alto.glitch.me/"+counter);
              collection.insert(doc,function(err,data){
-              if (err) throw err;
-              jsonOut=doc;
-              console.log(JSON.stringify(doc))
-              db.close()
-              response.send(jsonOut);
+             if (err) throw err;
+             jsonOut=doc;
+             console.log(JSON.stringify(doc))
+             db.close()
+             response.send(jsonOut);
       });
           }
         
