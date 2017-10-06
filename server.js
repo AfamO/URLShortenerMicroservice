@@ -60,17 +60,27 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
       collection.find(query,function(err,data){
         if (err) throw err;
         console.log(JSON.stringify(data));
-        //Is it alrea
+        //Is the original url already existing in db?
         if(data.original_url==originalUrl)
-        counter=data.counter;
-      }); 
-      collection.insert(doc,function(err,data){
-        if (err) throw err;
-        jsonOut=doc;
-        console.log(JSON.stringify(doc))
-        db.close()
-        response.send(jsonOut);
+          {
+            db.close();
+            response.send(jsonOut);
+          }
+        else
+          {
+             counter=data.counter;
+             counter=+counter// converts to numbers
+             collection.insert(doc,function(err,data){
+              if (err) throw err;
+              jsonOut=doc;
+              console.log(JSON.stringify(doc))
+              db.close()
+              response.send(jsonOut);
       });
+          }
+        
+      }); 
+      
     }
     else{
         console.log('Could not find collection url-shortener');
