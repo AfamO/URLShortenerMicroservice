@@ -55,7 +55,15 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     console.log('Connection established to my', dbUrl);
     var collection=db.collection('url-shortener');
     if(collection!=null){
+      var query={'original_url':originalUrl};
       counter=+counter;
+      collection.find(query,function(err,data){
+        if (err) throw err;
+        console.log(JSON.stringify(data));
+        //Is it alrea
+        if(data.original_url==originalUrl)
+        counter=data.counter;
+      }); 
       collection.insert(doc,function(err,data){
         if (err) throw err;
         jsonOut=doc;
