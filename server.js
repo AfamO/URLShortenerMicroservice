@@ -41,7 +41,7 @@ app.get("/new/*", function (request, response) {
   //response.send(JSON.stringify(parsedUrl));
   var originalUrl=request.url.replace("/new/","");
   var MongoClient = mongodb.MongoClient;
-var counter="00006";
+var counter="";
 var doc= new urlInfo(counter,originalUrl,"https://rich-alto.glitch.me/"+counter);
 
 //(Focus on This Variable)
@@ -61,7 +61,7 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
         jsonOut=doc;
         console.log(JSON.stringify(doc))
         db.close()
-        
+        response.send(jsonOut);
       });
     }
     else{
@@ -74,9 +74,7 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     db.close();
   }
 });
-  
-  
-  response.send(jsonOut);
+
 });
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
