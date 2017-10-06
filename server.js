@@ -62,7 +62,7 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     if(collection!=null){
       var query={original_url:originalUrl};
       counter=+counter;
-      collection.find(query).toArray(function(err,data){
+      collection.findOne(query,function(err,data){
         if (err) throw err;
         console.log(data);
         //Is the original url already existing in db?
@@ -70,12 +70,13 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
           {
             console.log(originalUrl +" already exists in DB.");
             db.close();
-            response.send(jsonOut);
+            response.send(data);
           }
         else
           {
              console.log(originalUrl +" doesn't exists in DB. Thus adding it....");
              counter=shuffle(numbers);//generate unique random number
+             counter=counter.replace(",","");
              console.log("The unique generated random number is::"+counter);
              counter=+counter// converts to numbers
              var doc= new urlInfo(counter,originalUrl,"https://rich-alto.glitch.me/"+counter);
