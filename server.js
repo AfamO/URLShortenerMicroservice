@@ -9,6 +9,11 @@ function urlInfo(counter,originalUrl,shortUrl){
   this.short_url=shortUrl;
   
 }
+function shuffle(o) {
+    for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+var numbers = [1, 2, 3, 4];
 //doc={"original_url":"https://www.google.com","short_url":"https://little-url.herokuapp.com/5414"};
 /**
   doc={
@@ -41,7 +46,7 @@ app.get("/new/*", function (request, response) {
   //response.send(JSON.stringify(parsedUrl));
   var originalUrl=request.url.replace("/new/","");
   var MongoClient = mongodb.MongoClient;
-var counter="";
+  var counter="";
 
 
 //(Focus on This Variable)
@@ -57,7 +62,7 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
     if(collection!=null){
       var query={original_url:originalUrl};
       counter=+counter;
-      collection.find(query,function(err,data){
+      collection.find(query).toArray(function(err,data){
         if (err) throw err;
         console.log(data);
         //Is the original url already existing in db?
@@ -70,7 +75,8 @@ var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb';
         else
           {
              console.log(originalUrl +" doesn't exists in DB. Thus adding it....");
-             counter=data.counter;
+             counter=shuffle(numbers);//generate unique random number
+             console.log("The unique generated random number is::"+counter);
              counter=+counter// converts to numbers
              var doc= new urlInfo(counter,originalUrl,"https://rich-alto.glitch.me/"+counter);
              collection.insert(doc,function(err,data){
