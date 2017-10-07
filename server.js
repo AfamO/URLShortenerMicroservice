@@ -40,6 +40,8 @@ app.use(express.static('public'));
 
 app.get("/[0-9]*", function (request, response) {
   var counter=request.url.replace("https://rich-alto.glitch.me/","");
+
+ countere.log(counter +" was sent as a requested port");
   // Use connect method to connect to the Server 
   MongoClient.connect(dbUrl, function (err, db) {
   if (err) {
@@ -65,6 +67,7 @@ app.get("/[0-9]*", function (request, response) {
           }
         else
           {
+           console.log(counter +" port was not found in DB.");
            response.send("Thank you!");
           }
       });//End findOne callback
