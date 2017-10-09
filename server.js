@@ -62,7 +62,8 @@ counter=counter.replace("/","")
             {
                 console.log(counter +" port was found in DB.");
                 db.close();
-                response.send(data);
+                window.location="https://ide.c9.io/afamo/afamwspace";
+                //response.send(data);
             }
           }
         else
