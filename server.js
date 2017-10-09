@@ -38,7 +38,7 @@ var app = express();
 
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
-var dbUrl = 'mongodb://AfamO:me17!mlab@ds057934.mlab.com:57934/fccmdb'; 
+var dbUrl =process.env.MONGOLAB_URI; 
 var MongoClient = mongodb.MongoClient;
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
