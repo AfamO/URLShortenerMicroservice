@@ -39,7 +39,7 @@ app.use(express.static('public'));
 // http://expressjs.com/en/starter/basic-routing.html
 
 app.get("/[0-9]*", function (request, response) {
-var counter=request.url.replace("https://rich-alto.glitch.me/","");
+var counter=request.url.replace("https://rich-/","");
 counter=counter.replace("/","")
  console.log(counter +" was sent as a requested port");
   // Use connect method to connect to the Server 
@@ -62,14 +62,14 @@ counter=counter.replace("/","")
             {
                 console.log(counter +" port was found in DB.");
                 db.close();
-                window.location="https://ide.c9.io/afamo/afamwspace";
-                //response.send(data);
+                var location="https://ide.c9.io/afamo/afamwspace";
+                return response.redirect(data.original_url);
             }
           }
         else
           {
            console.log(counter +" port was not found in DB.");
-           response.send("Thank you!");
+           response.send("Sorry!, but we can't find the corresponding original url of the short url https://rich-alto.glitch.me/"+request.url+" you requested for");
           }
       });//End findOne callback
     }
