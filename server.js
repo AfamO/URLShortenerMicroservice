@@ -9,17 +9,13 @@ function urlInfo(counter,originalUrl,shortUrl){
   this.short_url=shortUrl;
 }
 function ValidURL(str) {
-  var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
-    '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+ // domain name
-    '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
-    '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
-    '(\?[;&a-z\d%_.~+=-]*)?'+ // query string
-    '(\#[-a-z\d_]*)?$','i'); // fragment locater
-  if(!pattern.test(str)) {
-    return false;
-  } else {
-    return true;
-  }
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return pattern.test(str);
 }
 function shuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
@@ -100,19 +96,15 @@ var counter=request.url.replace("/","");
 });
 app.get("/new/*", function (request, response) {
   var parsedUrl=url.parse(request.url, true);
-  response.send(JSON.stringify(parsedUrl));
   var originalUrl=request.url.replace("/new/","");
+  //Is the address invalid?
   if(!ValidURL(originalUrl)){
     response.send("Invalid http address/Url, Please enter valid one");
   }
-
-  var counter="";
-
-
-//(Focus on This Variable)
-    
-//(Focus on This Variable)
-// Use connect method to connect to the Server 
+  else
+    {  
+      //Thus it  is valid
+var counter="";
   MongoClient.connect(dbUrl, function (err, db) {
   if (err) {
     console.log('Unable to connect to the mongoDB server. Error:', err);
@@ -151,6 +143,7 @@ app.get("/new/*", function (request, response) {
              jsonOut=doc;
              console.log(JSON.stringify(doc))
              db.close()
+             jsonOut
              response.send(jsonOut);
           });//Close Inner Db conection
       });
@@ -169,8 +162,9 @@ app.get("/new/*", function (request, response) {
     db.close();
   }
 });//Close outer DB connection
-
-});//Close http get method
+    }// Close 'else' part of the validateUrl if statement
+  });//Close http get method
+  
 
 // could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
 app.post("/dreams", function (request, response) {
