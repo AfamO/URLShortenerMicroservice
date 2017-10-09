@@ -99,7 +99,10 @@ app.get("/new/*", function (request, response) {
   var originalUrl=request.url.replace("/new/","");
   //Is the address invalid?
   if(!ValidURL(originalUrl)){
-    response.send("Invalid http address/Url, Please enter valid one");
+    var error={
+    error:"Wrong url format, make sure you have a valid protocol and real site."
+  }
+    response.send(error);
   }
   else
     {  
