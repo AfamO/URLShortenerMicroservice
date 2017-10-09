@@ -39,9 +39,9 @@ app.use(express.static('public'));
 // http://expressjs.com/en/starter/basic-routing.html
 
 app.get("/[0-9]*", function (request, response) {
-  var counter=request.url.replace("https://rich-alto.glitch.me/","");
-
- countere.log(counter +" was sent as a requested port");
+var counter=request.url.replace("https://rich-alto.glitch.me/","");
+counter=counter.replace("/","")
+ console.log(counter +" was sent as a requested port");
   // Use connect method to connect to the Server 
   MongoClient.connect(dbUrl, function (err, db) {
   if (err) {
@@ -50,10 +50,10 @@ app.get("/[0-9]*", function (request, response) {
     console.log('Connection established to my', dbUrl);
     var collection=db.collection('url-shortener');
     if(collection!=null){
-      var query={_id:counter};
       counter=+counter;
+      var query={_id:counter};
       collection.findOne(query,function(err,data){
-        if (err) throw err;
+      if (err) throw err;
         console.log(data);
         //Is the original url already existing in DB?
         if(data!=null)
