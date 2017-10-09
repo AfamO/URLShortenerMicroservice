@@ -70,7 +70,6 @@ var counter=request.url.replace("/","");
             {
                 console.log(counter +" port was found in DB.");
                 db.close();
-                var location="https://ide.c9.io/afamo/afamwspace";
                 return response.redirect(data.original_url);
             }
           }
