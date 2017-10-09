@@ -7,7 +7,19 @@ function urlInfo(counter,originalUrl,shortUrl){
   this._id=counter;
   this.original_url=originalUrl;
   this.short_url=shortUrl;
-  
+}
+function ValidURL(str) {
+  var pattern = new RegExp('^(https?:\/\/)?'+ // protocol
+    '((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'+ // domain name
+    '((\d{1,3}\.){3}\d{1,3}))'+ // OR ip (v4) address
+    '(\:\d+)?(\/[-a-z\d%_.~+]*)*'+ // port and path
+    '(\?[;&a-z\d%_.~+=-]*)?'+ // query string
+    '(\#[-a-z\d_]*)?$','i'); // fragment locater
+  if(!pattern.test(str)) {
+    return false;
+  } else {
+    return true;
+  }
 }
 function shuffle(o) {
     for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
@@ -88,8 +100,11 @@ var counter=request.url.replace("/","");
 });
 app.get("/new/*", function (request, response) {
   var parsedUrl=url.parse(request.url, true);
-  //response.send(JSON.stringify(parsedUrl));
+  response.send(JSON.stringify(parsedUrl));
   var originalUrl=request.url.replace("/new/","");
+  if(!ValidURL(originalUrl)){
+    response.send("Invalid http address/Url, Please enter valid one");
+  }
 
   var counter="";
 
