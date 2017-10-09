@@ -124,6 +124,7 @@ var counter="";
             {
                 console.log(originalUrl +" already exists in DB.");
                 db.close();
+                delete data._id;
                 response.send(data);
             }
           }
@@ -143,7 +144,7 @@ var counter="";
              jsonOut=doc;
              console.log(JSON.stringify(doc))
              db.close()
-             jsonOut
+             delete jsonOut._id;
              response.send(jsonOut);
           });//Close Inner Db conection
       });
